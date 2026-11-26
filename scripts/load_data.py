@@ -10,6 +10,13 @@ from sqlalchemy import Engine, create_engine, text
 
 DATASET = "olistbr/brazilian-ecommerce/versions/2"
 
+# 숫자처럼 보이지만 계산하지 않는 코드 값은 문자열로 읽어 앞자리 0을 보존한다
+TEXT_COLUMNS = {
+    "customer_zip_code_prefix": str,
+    "seller_zip_code_prefix": str,
+    "geolocation_zip_code_prefix": str,
+}
+
 
 def download_dataset() -> Path:
     """Kaggle에서 데이터셋을 내려받고 CSV가 있는 폴더 경로를 돌려준다."""
@@ -42,7 +49,7 @@ def is_date_column(column: str) -> bool:
 
 def load_csv(csv_path: Path, table_name: str, engine: Engine) -> int:
     """CSV 하나를 읽어 테이블로 저장하고, 읽은 행 수를 돌려준다."""
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, dtype=TEXT_COLUMNS)
 
     for column in df.columns:
         if is_date_column(column):
