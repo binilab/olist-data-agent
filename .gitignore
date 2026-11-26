@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# 비밀 정보가 담긴 환경 변수 파일
+.env
+
